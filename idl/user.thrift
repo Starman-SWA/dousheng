@@ -1,8 +1,8 @@
 namespace go douyin_user
 
 struct UserRegisterRequest {
-    1: required string username
-    2: required string password
+    1: required string username (vt.max_size = "32")
+    2: required string password (vt.max_size = "32")
 }
 
 struct UserRegisterResponse {

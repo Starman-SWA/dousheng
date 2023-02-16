@@ -1,6 +1,7 @@
 package db
 
 import (
+	"github.com/1037group/dousheng/pkg/configs/sql"
 	"time"
 
 	"github.com/1037group/dousheng/pkg/consts"
@@ -35,6 +36,11 @@ func Init() {
 	}
 
 	if err := DB.Use(tracing.NewPlugin()); err != nil {
+		panic(err)
+	}
+
+	err = DB.AutoMigrate(&sql.User{}, &sql.Video{})
+	if err != nil {
 		panic(err)
 	}
 }

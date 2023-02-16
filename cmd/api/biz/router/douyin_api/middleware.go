@@ -140,3 +140,73 @@ func _testMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _actionMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _listMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _action0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _list0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _feed0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _action1Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _chatMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _action2Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _list1Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _action3Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _list2Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _list3Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _loginMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _registerMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
