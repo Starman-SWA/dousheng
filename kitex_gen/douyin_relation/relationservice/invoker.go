@@ -3,7 +3,7 @@
 package relationservice
 
 import (
-	douyin_relation "github.com/1037group/dousheng/kitex_gen/douyin_relation"
+	douyin_relation "dousheng/kitex_gen/douyin_relation"
 	server "github.com/cloudwego/kitex/server"
 )
 

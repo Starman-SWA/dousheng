@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/1037group/dousheng/dal/db"
-	"github.com/1037group/dousheng/kitex_gen/douyin_user/userservice"
-	"github.com/1037group/dousheng/pkg/consts"
-	"github.com/1037group/dousheng/pkg/mw"
+	"dousheng/dal/db"
+	"dousheng/kitex_gen/douyin_user/userservice"
+	"dousheng/pkg/consts"
+	"dousheng/pkg/mw"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/limit"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"

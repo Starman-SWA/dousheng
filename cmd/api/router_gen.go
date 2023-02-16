@@ -3,7 +3,7 @@
 package main
 
 import (
-	router "github.com/1037group/dousheng/cmd/api/biz/router"
+	router "dousheng/cmd/api/biz/router"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 

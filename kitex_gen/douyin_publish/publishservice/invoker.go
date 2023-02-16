@@ -3,7 +3,7 @@
 package publishservice
 
 import (
-	douyin_publish "github.com/1037group/dousheng/kitex_gen/douyin_publish"
+	douyin_publish "dousheng/kitex_gen/douyin_publish"
 	server "github.com/cloudwego/kitex/server"
 )
 

@@ -10,7 +10,7 @@ import (
 
 	"github.com/apache/thrift/lib/go/thrift"
 
-	"github.com/1037group/dousheng/kitex_gen/douyin_feed"
+	"dousheng/kitex_gen/douyin_feed"
 	"github.com/cloudwego/kitex/pkg/protocol/bthrift"
 )
 

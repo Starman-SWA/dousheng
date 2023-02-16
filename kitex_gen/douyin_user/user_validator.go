@@ -22,6 +22,12 @@ var (
 )
 
 func (p *UserRegisterRequest) IsValid() error {
+	if len(p.Username) > int(32) {
+		return fmt.Errorf("field Username max_len rule failed, current value: %d", len(p.Username))
+	}
+	if len(p.Password) > int(32) {
+		return fmt.Errorf("field Password max_len rule failed, current value: %d", len(p.Password))
+	}
 	return nil
 }
 func (p *UserRegisterResponse) IsValid() error {

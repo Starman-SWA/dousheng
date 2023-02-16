@@ -2,7 +2,7 @@ package db
 
 import (
 	"context"
-	"github.com/1037group/dousheng/pkg/configs/sql"
+	"dousheng/pkg/configs/sql"
 	"github.com/cloudwego/kitex/pkg/klog"
 )
 

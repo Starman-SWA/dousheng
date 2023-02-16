@@ -1,7 +1,7 @@
 package test
 
 import (
-	"github.com/1037group/dousheng/cmd/api/biz/model/douyin_api"
+	"dousheng/cmd/api/biz/model/douyin_api"
 )
 
 var DemoVideos = []*douyin_api.Video{

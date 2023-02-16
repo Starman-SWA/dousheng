@@ -5,7 +5,7 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"time"
 )
-import "github.com/1037group/dousheng/pkg/configs/sql"
+import "dousheng/pkg/configs/sql"
 
 // MGetVideos multiple get list of videos
 func MGetVideos(ctx context.Context, last_time *int64) ([]*sql.Video, error) {

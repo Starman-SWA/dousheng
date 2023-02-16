@@ -1,10 +1,10 @@
 package db
 
 import (
-	"github.com/1037group/dousheng/pkg/configs/sql"
+	"dousheng/pkg/configs/sql"
 	"time"
 
-	"github.com/1037group/dousheng/pkg/consts"
+	"dousheng/pkg/consts"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

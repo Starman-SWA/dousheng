@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"github.com/1037group/dousheng/dal/db"
-	douyin_feed "github.com/1037group/dousheng/kitex_gen/douyin_feed"
-	"github.com/1037group/dousheng/pack"
-	"github.com/1037group/dousheng/pkg/configs/sql"
+	"dousheng/dal/db"
+	douyin_feed "dousheng/kitex_gen/douyin_feed"
+	"dousheng/pack"
+	"dousheng/pkg/configs/sql"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"time"
 )

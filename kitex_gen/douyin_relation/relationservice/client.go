@@ -4,7 +4,7 @@ package relationservice
 
 import (
 	"context"
-	douyin_relation "github.com/1037group/dousheng/kitex_gen/douyin_relation"
+	douyin_relation "dousheng/kitex_gen/douyin_relation"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
 )

@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	douyin_message "github.com/1037group/dousheng/kitex_gen/douyin_message"
+	douyin_message "dousheng/kitex_gen/douyin_message"
 )
 
 // MessageServiceImpl implements the last service interface defined in the IDL.

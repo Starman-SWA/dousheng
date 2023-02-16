@@ -4,7 +4,7 @@ package favoriteservice
 
 import (
 	"context"
-	douyin_favorite "github.com/1037group/dousheng/kitex_gen/douyin_favorite"
+	douyin_favorite "dousheng/kitex_gen/douyin_favorite"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 )

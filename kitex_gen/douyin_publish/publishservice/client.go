@@ -4,7 +4,7 @@ package publishservice
 
 import (
 	"context"
-	douyin_publish "github.com/1037group/dousheng/kitex_gen/douyin_publish"
+	douyin_publish "dousheng/kitex_gen/douyin_publish"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
 )

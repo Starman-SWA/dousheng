@@ -1,6 +1,6 @@
 package dal
 
-import "github.com/1037group/dousheng/dal/db"
+import "dousheng/dal/db"
 
 // Init init dal
 func Init() {

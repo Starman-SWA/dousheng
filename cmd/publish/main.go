@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/1037group/dousheng/kitex_gen/douyin_publish/publishservice"
-	"github.com/1037group/dousheng/pkg/consts"
-	"github.com/1037group/dousheng/pkg/mw"
+	"dousheng/kitex_gen/douyin_publish/publishservice"
+	"dousheng/pkg/consts"
+	"dousheng/pkg/mw"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/limit"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"

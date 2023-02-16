@@ -1,9 +1,9 @@
 package mw
 
 import (
-	"github.com/1037group/dousheng/cmd/api/biz/model/douyin_api"
-	"github.com/1037group/dousheng/pkg/consts"
-	"github.com/1037group/dousheng/pkg/errno"
+	"dousheng/cmd/api/biz/model/douyin_api"
+	"dousheng/pkg/consts"
+	"dousheng/pkg/errno"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"context"
-	"github.com/1037group/dousheng/cmd/api/biz/rpc"
-	"github.com/1037group/dousheng/kitex_gen/douyin_user"
+	"dousheng/cmd/api/biz/rpc"
+	"dousheng/kitex_gen/douyin_user"
 	"github.com/hertz-contrib/jwt"
 )
 

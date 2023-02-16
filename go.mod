@@ -1,4 +1,4 @@
-module github.com/1037group/dousheng
+module dousheng
 
 go 1.18
 

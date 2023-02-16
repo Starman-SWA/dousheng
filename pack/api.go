@@ -1,8 +1,8 @@
 package pack
 
 import (
-	"github.com/1037group/dousheng/cmd/api/biz/model/douyin_api"
-	"github.com/1037group/dousheng/kitex_gen/douyin_feed"
+	"dousheng/cmd/api/biz/model/douyin_api"
+	"dousheng/kitex_gen/douyin_feed"
 )
 
 // User

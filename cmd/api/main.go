@@ -3,8 +3,8 @@
 package main
 
 import (
-	"github.com/1037group/dousheng/cmd/api/biz/mw"
-	"github.com/1037group/dousheng/cmd/api/biz/rpc"
+	"dousheng/cmd/api/biz/mw"
+	"dousheng/cmd/api/biz/rpc"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/hertz-contrib/obs-opentelemetry/tracing"

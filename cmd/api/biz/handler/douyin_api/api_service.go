@@ -4,12 +4,12 @@ package douyin_api
 
 import (
 	"context"
-	douyin_api "github.com/1037group/dousheng/cmd/api/biz/model/douyin_api"
-	"github.com/1037group/dousheng/cmd/api/biz/mw"
-	"github.com/1037group/dousheng/cmd/api/biz/rpc"
-	"github.com/1037group/dousheng/kitex_gen/douyin_feed"
-	"github.com/1037group/dousheng/kitex_gen/douyin_user"
-	"github.com/1037group/dousheng/pack"
+	douyin_api "dousheng/cmd/api/biz/model/douyin_api"
+	"dousheng/cmd/api/biz/mw"
+	"dousheng/cmd/api/biz/rpc"
+	"dousheng/kitex_gen/douyin_feed"
+	"dousheng/kitex_gen/douyin_user"
+	"dousheng/pack"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 	"github.com/cloudwego/kitex/pkg/klog"

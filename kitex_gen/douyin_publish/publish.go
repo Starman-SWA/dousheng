@@ -4,8 +4,8 @@ package douyin_publish
 
 import (
 	"context"
+	"dousheng/kitex_gen/douyin_feed"
 	"fmt"
-	"github.com/1037group/dousheng/kitex_gen/douyin_feed"
 	"github.com/apache/thrift/lib/go/thrift"
 	"strings"
 )

@@ -2,7 +2,7 @@
 package favoriteservice
 
 import (
-	douyin_favorite "github.com/1037group/dousheng/kitex_gen/douyin_favorite"
+	douyin_favorite "dousheng/kitex_gen/douyin_favorite"
 	server "github.com/cloudwego/kitex/server"
 )
 

@@ -4,7 +4,7 @@ package feedservice
 
 import (
 	"context"
-	douyin_feed "github.com/1037group/dousheng/kitex_gen/douyin_feed"
+	douyin_feed "dousheng/kitex_gen/douyin_feed"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
 )

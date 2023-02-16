@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
-	"github.com/1037group/dousheng/cmd/user/logic"
-	"github.com/1037group/dousheng/dal/db"
-	douyin_user "github.com/1037group/dousheng/kitex_gen/douyin_user"
-	"github.com/1037group/dousheng/pkg/configs/sql"
-	"github.com/1037group/dousheng/pkg/errno"
+	"dousheng/cmd/user/logic"
+	"dousheng/dal/db"
+	douyin_user "dousheng/kitex_gen/douyin_user"
+	"dousheng/pkg/configs/sql"
+	"dousheng/pkg/errno"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"time"
 )

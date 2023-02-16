@@ -1,9 +1,9 @@
 package pack
 
 import (
-	"github.com/1037group/dousheng/kitex_gen/douyin_feed"
-	"github.com/1037group/dousheng/kitex_gen/douyin_user"
-	"github.com/1037group/dousheng/pkg/configs/sql"
+	"dousheng/kitex_gen/douyin_feed"
+	"dousheng/kitex_gen/douyin_user"
+	"dousheng/pkg/configs/sql"
 )
 
 // Video pack video info

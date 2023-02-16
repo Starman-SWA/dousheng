@@ -2,7 +2,7 @@
 package messageservice
 
 import (
-	douyin_message "github.com/1037group/dousheng/kitex_gen/douyin_message"
+	douyin_message "dousheng/kitex_gen/douyin_message"
 	server "github.com/cloudwego/kitex/server"
 )
 

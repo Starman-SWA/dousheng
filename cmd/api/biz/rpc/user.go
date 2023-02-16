@@ -2,11 +2,11 @@ package rpc
 
 import (
 	"context"
-	"github.com/1037group/dousheng/kitex_gen/douyin_user"
-	"github.com/1037group/dousheng/kitex_gen/douyin_user/userservice"
-	"github.com/1037group/dousheng/pkg/consts"
-	"github.com/1037group/dousheng/pkg/errno"
-	"github.com/1037group/dousheng/pkg/mw"
+	"dousheng/kitex_gen/douyin_user"
+	"dousheng/kitex_gen/douyin_user/userservice"
+	"dousheng/pkg/consts"
+	"dousheng/pkg/errno"
+	"dousheng/pkg/mw"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/kitex-contrib/obs-opentelemetry/provider"

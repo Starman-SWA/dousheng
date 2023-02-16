@@ -2,11 +2,11 @@ package rpc
 
 import (
 	"context"
-	"github.com/1037group/dousheng/kitex_gen/douyin_feed"
-	"github.com/1037group/dousheng/kitex_gen/douyin_feed/feedservice"
-	"github.com/1037group/dousheng/pkg/consts"
-	"github.com/1037group/dousheng/pkg/errno"
-	"github.com/1037group/dousheng/pkg/mw"
+	"dousheng/kitex_gen/douyin_feed"
+	"dousheng/kitex_gen/douyin_feed/feedservice"
+	"dousheng/pkg/consts"
+	"dousheng/pkg/errno"
+	"dousheng/pkg/mw"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"

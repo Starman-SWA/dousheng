@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	douyin_publish "github.com/1037group/dousheng/kitex_gen/douyin_publish"
+	douyin_publish "dousheng/kitex_gen/douyin_publish"
 )
 
 // PublishServiceImpl implements the last service interface defined in the IDL.

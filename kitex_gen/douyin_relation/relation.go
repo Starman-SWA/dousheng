@@ -4,8 +4,8 @@ package douyin_relation
 
 import (
 	"context"
+	"dousheng/kitex_gen/douyin_user"
 	"fmt"
-	"github.com/1037group/dousheng/kitex_gen/douyin_user"
 	"github.com/apache/thrift/lib/go/thrift"
 	"strings"
 )

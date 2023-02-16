@@ -3,7 +3,7 @@
 package router
 
 import (
-	douyin_api "github.com/1037group/dousheng/cmd/api/biz/router/douyin_api"
+	douyin_api "dousheng/cmd/api/biz/router/douyin_api"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 

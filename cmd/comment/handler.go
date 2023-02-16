@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	douyin_comment "github.com/1037group/dousheng/kitex_gen/douyin_comment"
+	douyin_comment "dousheng/kitex_gen/douyin_comment"
 )
 
 // CommentServiceImpl implements the last service interface defined in the IDL.

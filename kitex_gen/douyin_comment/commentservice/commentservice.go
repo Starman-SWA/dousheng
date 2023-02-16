@@ -4,7 +4,7 @@ package commentservice
 
 import (
 	"context"
-	douyin_comment "github.com/1037group/dousheng/kitex_gen/douyin_comment"
+	douyin_comment "dousheng/kitex_gen/douyin_comment"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 )
