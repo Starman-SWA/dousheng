@@ -21,7 +21,7 @@ func MGetVideos(ctx context.Context, last_time *int64) ([]*sql.Video, error) {
 		last_time = &cur_time
 	}
 
-	query := sql.SQL_VIDEO_UTIME + " < ?"
+	query := sql.SQL_VIDEO_UTIME + " <= ?"
 	if err := DB.WithContext(ctx).Order(sql.SQL_VIDEO_UTIME+" desc").Find(&res, query, time.UnixMilli(*last_time)).Error; err != nil {
 		klog.CtxInfof(ctx, "[MGetVideos] res: %+v\n", res)
 		return res, err

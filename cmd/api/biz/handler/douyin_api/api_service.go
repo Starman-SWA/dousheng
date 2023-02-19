@@ -98,6 +98,8 @@ func User(ctx context.Context, c *app.RequestContext) {
 // PublishAction .
 // @router /douyin/publish/action [POST]
 func PublishAction(ctx context.Context, c *app.RequestContext) {
+	mw.JwtMiddleware.MiddlewareFunc()
+
 	var err error
 	var req douyin_api.PublishActionRequest
 	err = c.BindAndValidate(&req)
