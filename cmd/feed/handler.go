@@ -4,8 +4,7 @@ import (
 	"context"
 	"dousheng/dal/db"
 	douyin_feed "dousheng/kitex_gen/douyin_feed"
-	"dousheng/pack"
-	"dousheng/pkg/configs/sql"
+	"dousheng/pkg/configs/sqlmodel"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"time"
 )
@@ -27,9 +26,12 @@ func (s *FeedServiceImpl) Feed(ctx context.Context, req *douyin_feed.FeedRequest
 		klog.CtxErrorf(ctx, err.Error())
 		return nil, err
 	}
+	if len(res) > 30 {
+		res = res[:30]
+	}
 	klog.CtxInfof(ctx, "res: %+v", res)
 
-	userMap := make(map[int64]sql.User)
+	userMap := make(map[int64]sqlmodel.User)
 	var userIDs []int64
 	for _, m := range res {
 		userIDs = append(userIDs, m.UserId)
@@ -45,7 +47,7 @@ func (s *FeedServiceImpl) Feed(ctx context.Context, req *douyin_feed.FeedRequest
 		userMap[m.UserId] = *m
 	}
 
-	videoList := pack.Videos(res, userMap)
+	videoList := db.Videos(res, userMap, req.UserId)
 
 	return &douyin_feed.FeedResponse{
 		StatusCode: 0,

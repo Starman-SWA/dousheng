@@ -6,13 +6,17 @@ import (
 )
 
 func TestPutFile(*testing.T) {
-	Init()
 
-	putFile("1", "../resources/bear.mp4")
+	err := PutFile("1", "../resources/bear.mp4")
+	if err != nil {
+		return
+	}
 }
 
 func TestPutAndGet(*testing.T) {
-	Init()
-	putFile("1", "../resources/bear.mp4")
-	fmt.Println(genGetURL("1"))
+	err := PutFile("1", "../resources/bear.mp4")
+	if err != nil {
+		return
+	}
+	fmt.Println(GenGetURL("1"))
 }

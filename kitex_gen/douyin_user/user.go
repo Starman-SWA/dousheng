@@ -1803,11 +1803,14 @@ func (p *UserResponse) Field3DeepEqual(src *User) bool {
 }
 
 type User struct {
-	Id            int64  `thrift:"id,1,required" frugal:"1,required,i64" json:"id"`
-	Name          string `thrift:"name,2,required" frugal:"2,required,string" json:"name"`
-	FollowCount   *int64 `thrift:"follow_count,3,optional" frugal:"3,optional,i64" json:"follow_count,omitempty"`
-	FollowerCount *int64 `thrift:"follower_count,4,optional" frugal:"4,optional,i64" json:"follower_count,omitempty"`
-	IsFollow      bool   `thrift:"is_follow,5,required" frugal:"5,required,bool" json:"is_follow"`
+	Id             int64  `thrift:"id,1,required" frugal:"1,required,i64" json:"id"`
+	Name           string `thrift:"name,2,required" frugal:"2,required,string" json:"name"`
+	FollowCount    *int64 `thrift:"follow_count,3,optional" frugal:"3,optional,i64" json:"follow_count,omitempty"`
+	FollowerCount  *int64 `thrift:"follower_count,4,optional" frugal:"4,optional,i64" json:"follower_count,omitempty"`
+	IsFollow       bool   `thrift:"is_follow,5,required" frugal:"5,required,bool" json:"is_follow"`
+	TotalFavorited int64  `thrift:"total_favorited,6,required" frugal:"6,required,i64" json:"total_favorited"`
+	WorkCount      int64  `thrift:"work_count,7,required" frugal:"7,required,i64" json:"work_count"`
+	FavoriteCount  int64  `thrift:"favorite_count,8,required" frugal:"8,required,i64" json:"favorite_count"`
 }
 
 func NewUser() *User {
@@ -1847,6 +1850,18 @@ func (p *User) GetFollowerCount() (v int64) {
 func (p *User) GetIsFollow() (v bool) {
 	return p.IsFollow
 }
+
+func (p *User) GetTotalFavorited() (v int64) {
+	return p.TotalFavorited
+}
+
+func (p *User) GetWorkCount() (v int64) {
+	return p.WorkCount
+}
+
+func (p *User) GetFavoriteCount() (v int64) {
+	return p.FavoriteCount
+}
 func (p *User) SetId(val int64) {
 	p.Id = val
 }
@@ -1862,6 +1877,15 @@ func (p *User) SetFollowerCount(val *int64) {
 func (p *User) SetIsFollow(val bool) {
 	p.IsFollow = val
 }
+func (p *User) SetTotalFavorited(val int64) {
+	p.TotalFavorited = val
+}
+func (p *User) SetWorkCount(val int64) {
+	p.WorkCount = val
+}
+func (p *User) SetFavoriteCount(val int64) {
+	p.FavoriteCount = val
+}
 
 var fieldIDToName_User = map[int16]string{
 	1: "id",
@@ -1869,6 +1893,9 @@ var fieldIDToName_User = map[int16]string{
 	3: "follow_count",
 	4: "follower_count",
 	5: "is_follow",
+	6: "total_favorited",
+	7: "work_count",
+	8: "favorite_count",
 }
 
 func (p *User) IsSetFollowCount() bool {
@@ -1886,6 +1913,9 @@ func (p *User) Read(iprot thrift.TProtocol) (err error) {
 	var issetId bool = false
 	var issetName bool = false
 	var issetIsFollow bool = false
+	var issetTotalFavorited bool = false
+	var issetWorkCount bool = false
+	var issetFavoriteCount bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -1954,6 +1984,39 @@ func (p *User) Read(iprot thrift.TProtocol) (err error) {
 					goto SkipFieldError
 				}
 			}
+		case 6:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField6(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetTotalFavorited = true
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 7:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetWorkCount = true
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 8:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetFavoriteCount = true
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
 		default:
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
@@ -1980,6 +2043,21 @@ func (p *User) Read(iprot thrift.TProtocol) (err error) {
 
 	if !issetIsFollow {
 		fieldId = 5
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetTotalFavorited {
+		fieldId = 6
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetWorkCount {
+		fieldId = 7
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetFavoriteCount {
+		fieldId = 8
 		goto RequiredFieldNotSetError
 	}
 	return nil
@@ -2045,6 +2123,33 @@ func (p *User) ReadField5(iprot thrift.TProtocol) error {
 	return nil
 }
 
+func (p *User) ReadField6(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.TotalFavorited = v
+	}
+	return nil
+}
+
+func (p *User) ReadField7(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.WorkCount = v
+	}
+	return nil
+}
+
+func (p *User) ReadField8(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.FavoriteCount = v
+	}
+	return nil
+}
+
 func (p *User) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("User"); err != nil {
@@ -2069,6 +2174,18 @@ func (p *User) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField5(oprot); err != nil {
 			fieldId = 5
+			goto WriteFieldError
+		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
+			goto WriteFieldError
+		}
+		if err = p.writeField7(oprot); err != nil {
+			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
 			goto WriteFieldError
 		}
 
@@ -2179,6 +2296,57 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
 }
 
+func (p *User) writeField6(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("total_favorited", thrift.I64, 6); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.TotalFavorited); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
+}
+
+func (p *User) writeField7(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("work_count", thrift.I64, 7); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.WorkCount); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
+}
+
+func (p *User) writeField8(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("favorite_count", thrift.I64, 8); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.FavoriteCount); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
+
 func (p *User) String() string {
 	if p == nil {
 		return "<nil>"
@@ -2205,6 +2373,15 @@ func (p *User) DeepEqual(ano *User) bool {
 		return false
 	}
 	if !p.Field5DeepEqual(ano.IsFollow) {
+		return false
+	}
+	if !p.Field6DeepEqual(ano.TotalFavorited) {
+		return false
+	}
+	if !p.Field7DeepEqual(ano.WorkCount) {
+		return false
+	}
+	if !p.Field8DeepEqual(ano.FavoriteCount) {
 		return false
 	}
 	return true
@@ -2251,6 +2428,27 @@ func (p *User) Field4DeepEqual(src *int64) bool {
 func (p *User) Field5DeepEqual(src bool) bool {
 
 	if p.IsFollow != src {
+		return false
+	}
+	return true
+}
+func (p *User) Field6DeepEqual(src int64) bool {
+
+	if p.TotalFavorited != src {
+		return false
+	}
+	return true
+}
+func (p *User) Field7DeepEqual(src int64) bool {
+
+	if p.WorkCount != src {
+		return false
+	}
+	return true
+}
+func (p *User) Field8DeepEqual(src int64) bool {
+
+	if p.FavoriteCount != src {
 		return false
 	}
 	return true

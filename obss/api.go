@@ -1,13 +1,14 @@
 package obss
 
 import (
+	"dousheng/pkg/consts"
 	"fmt"
 	"github.com/huaweicloud/huaweicloud-sdk-go-obs/obs"
 )
 
-func putFile(key string, source string) {
+func PutFile(key string, source string) error {
 	input := &obs.PutFileInput{}
-	input.Bucket = bucketName
+	input.Bucket = consts.ObsBucketName
 	input.Key = key
 	input.SourceFile = source
 	output, err := obsClient.PutFile(input)
@@ -23,8 +24,10 @@ func putFile(key string, source string) {
 			fmt.Println(err)
 		}
 	}
+
+	return err
 }
 
-func genGetURL(key string) string {
-	return "https://" + bucketName + "." + endPoint + "/" + key
+func GenGetURL(key string) string {
+	return "https://" + consts.ObsBucketName + "." + consts.ObsEndPoint + "/" + key
 }

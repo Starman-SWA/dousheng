@@ -1,6 +1,7 @@
 package main
 
 import (
+	"dousheng/cmd/comment/kafkaop"
 	"dousheng/kitex_gen/douyin_comment/commentservice"
 	"dousheng/pkg/consts"
 	"dousheng/pkg/mw"
@@ -19,6 +20,7 @@ func Init() {
 	// klog init
 	klog.SetLogger(kitexlogrus.NewLogger())
 	klog.SetLevel(klog.LevelInfo)
+	go kafkaop.ConsumeComment()
 }
 
 func main() {

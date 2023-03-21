@@ -5,7 +5,7 @@ import (
 	"dousheng/cmd/user/logic"
 	"dousheng/dal/db"
 	douyin_user "dousheng/kitex_gen/douyin_user"
-	"dousheng/pkg/configs/sql"
+	"dousheng/pkg/configs/sqlmodel"
 	"dousheng/pkg/errno"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"time"
@@ -70,7 +70,7 @@ func (s *UserServiceImpl) UserRegister(ctx context.Context, req *douyin_user.Use
 	}
 
 	t := time.Now()
-	user := sql.User{
+	user := sqlmodel.User{
 		UserName:          req.Username,
 		UserFollowCount:   0,
 		UserFollowerCount: 0,
@@ -108,6 +108,35 @@ func (s *UserServiceImpl) UserRegister(ctx context.Context, req *douyin_user.Use
 
 // User implements the UserServiceImpl interface.
 func (s *UserServiceImpl) User(ctx context.Context, req *douyin_user.UserRequest) (resp *douyin_user.UserResponse, err error) {
-	// TODO: Your code here...
-	return
+	klog.CtxInfof(ctx, "[User] %+v", req)
+
+	users, err := db.MGetUserByID(ctx, []int64{req.UserId})
+	if err != nil {
+		klog.CtxErrorf(ctx, err.Error())
+		return nil, errno.AuthorizationFailedErr
+	}
+	if len(users) == 0 {
+		klog.CtxErrorf(ctx, errno.UserNotExistErr.ErrMsg)
+		return nil, errno.UserNotExistErr
+	}
+	user := users[0]
+
+	// favorited count
+	favoritedCount := db.GetFavoritedCountByUser(req.UserId)
+	// work count
+	workCount := len(db.GetPublishList(req.UserId))
+	// favorite count
+	favoriteCount := db.GetFavoriteCountByUser(req.UserId)
+
+	resp = &douyin_user.UserResponse{User: &douyin_user.User{
+		Id:             req.UserId,
+		Name:           user.UserName,
+		FollowCount:    &user.UserFollowCount,
+		FollowerCount:  &user.UserFollowerCount,
+		IsFollow:       false,
+		TotalFavorited: favoritedCount,
+		WorkCount:      int64(workCount),
+		FavoriteCount:  favoriteCount,
+	}}
+	return resp, nil
 }

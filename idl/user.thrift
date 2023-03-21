@@ -41,6 +41,9 @@ struct User {
     3: optional i64 follow_count
     4: optional i64 follower_count
     5: required bool is_follow
+    6: required i64 total_favorited
+    7: required i64 work_count
+    8: required i64 favorite_count
 }
 
 service UserService {

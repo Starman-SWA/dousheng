@@ -1,6 +1,7 @@
 package main
 
 import (
+	"dousheng/cmd/favorite/kafkaop"
 	"dousheng/kitex_gen/douyin_favorite/favoriteservice"
 	"dousheng/pkg/consts"
 	"dousheng/pkg/mw"
@@ -19,6 +20,7 @@ func Init() {
 	// klog init
 	klog.SetLogger(kitexlogrus.NewLogger())
 	klog.SetLevel(klog.LevelInfo)
+	go kafkaop.ConsumeLike()
 }
 
 func main() {
@@ -31,7 +33,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	Init()
 	provider.NewOpenTelemetryProvider(
 		provider.WithServiceName(consts.FavoriteServiceName),
 		provider.WithExportEndpoint(consts.ExportEndpoint),

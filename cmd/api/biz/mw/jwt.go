@@ -19,11 +19,12 @@ import (
 // TODO code review
 
 var JwtMiddleware *jwt.HertzJWTMiddleware
+var err error
 
 func InitJWT() {
-	JwtMiddleware, _ = jwt.New(&jwt.HertzJWTMiddleware{
+	JwtMiddleware, err = jwt.New(&jwt.HertzJWTMiddleware{
 		Key:           []byte(consts.SecretKey),
-		TokenLookup:   "header: Authorization, query: token, cookie: jwt",
+		TokenLookup:   "form: token, query: token",
 		TokenHeadName: "Bearer",
 		TimeFunc:      time.Now,
 		Timeout:       time.Hour,
@@ -31,8 +32,8 @@ func InitJWT() {
 		IdentityKey:   consts.IdentityKey,
 		IdentityHandler: func(ctx context.Context, c *app.RequestContext) interface{} {
 			claims := jwt.ExtractClaims(ctx, c)
-			return &douyin_api.User{
-				ID: int64(claims[consts.IdentityKey].(float64)),
+			return &douyin_user.User{
+				Id: int64(claims[consts.IdentityKey].(float64)),
 			}
 		},
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
@@ -73,7 +74,8 @@ func InitJWT() {
 		},
 		Unauthorized: func(ctx context.Context, c *app.RequestContext, code int, message string) {
 			c.JSON(http.StatusOK, utils.H{
-				"code":    errno.AuthorizationFailedErr.ErrCode,
+				//"code":    errno.AuthorizationFailedErr.ErrCode,
+				"code":    code,
 				"message": message,
 			})
 		},
@@ -86,4 +88,7 @@ func InitJWT() {
 			}
 		},
 	})
+	if err != nil {
+		panic(err)
+	}
 }

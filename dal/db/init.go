@@ -1,7 +1,6 @@
 package db
 
 import (
-	"dousheng/pkg/configs/sql"
 	"time"
 
 	"dousheng/pkg/consts"
@@ -14,8 +13,8 @@ import (
 
 var DB *gorm.DB
 
-// Init init DB
-func Init() {
+// init init DB
+func init() {
 	var err error
 	gormlogrus := logger.New(
 		logrus.NewWriter(),
@@ -39,8 +38,8 @@ func Init() {
 		panic(err)
 	}
 
-	err = DB.AutoMigrate(&sql.User{}, &sql.Video{})
-	if err != nil {
-		panic(err)
-	}
+	//err = DB.AutoMigrate(&sql.User{}, &sql.Video{})
+	//if err != nil {
+	//	panic(err)
+	//}
 }

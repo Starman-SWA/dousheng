@@ -25,4 +25,12 @@ const (
 	ExportEndpoint = ":4317"
 	ETCDAddress    = "127.0.0.1:2379"
 	DefaultLimit   = 10
+
+	VideoDir    = "/srv/dousheng/video/"
+	SnapshotDir = "/srv/dousheng/snapshot/"
+
+	ObsEndPoint   = "obs.cn-south-1.myhuaweicloud.com"
+	ObsAk         = "DSNG3REB4BY3GPAI62GQ"
+	ObsSk         = "ykcrjBMTlmpP7EqD99fPhHJQpYfe5y4hWByo1KJP"
+	ObsBucketName = "dousheng"
 )

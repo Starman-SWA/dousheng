@@ -3,6 +3,7 @@
 package DouyinApi
 
 import (
+	"dousheng/cmd/api/biz/mw"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -23,12 +24,13 @@ func _userMw() []app.HandlerFunc {
 
 func _user0Mw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{mw.JwtMiddleware.MiddlewareFunc()}
 }
 
 func _userloginMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	//mw.JwtMiddleware.LoginHandler(ctx, c)
+	return []app.HandlerFunc{mw.JwtMiddleware.LoginHandler}
 }
 
 func _userregisterMw() []app.HandlerFunc {
@@ -53,12 +55,12 @@ func _commentMw() []app.HandlerFunc {
 
 func _comment_ctionMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{mw.JwtMiddleware.MiddlewareFunc()}
 }
 
 func _commentlistMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{mw.JwtMiddleware.MiddlewareFunc()}
 }
 
 func _favoriteMw() []app.HandlerFunc {
@@ -68,12 +70,12 @@ func _favoriteMw() []app.HandlerFunc {
 
 func _favorite_ctionMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{mw.JwtMiddleware.MiddlewareFunc()}
 }
 
 func _favoritelistMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{mw.JwtMiddleware.MiddlewareFunc()}
 }
 
 func _messageMw() []app.HandlerFunc {
@@ -98,12 +100,13 @@ func _publishMw() []app.HandlerFunc {
 
 func _publish_ctionMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{mw.JwtMiddleware.MiddlewareFunc()}
+	// return nil
 }
 
 func _publishlistMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{mw.JwtMiddleware.MiddlewareFunc()}
 }
 
 func _relationMw() []app.HandlerFunc {

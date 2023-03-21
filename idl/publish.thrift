@@ -3,8 +3,8 @@ namespace go douyin_publish
 include "feed.thrift"
 
 struct PublishActionRequest {
-    1: required string token
-    2: required byte data
+    1: required i64 user_id
+    2: required binary data
     3: required string title
 }
 

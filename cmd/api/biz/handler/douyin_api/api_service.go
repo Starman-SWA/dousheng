@@ -7,18 +7,41 @@ import (
 	douyin_api "dousheng/cmd/api/biz/model/douyin_api"
 	"dousheng/cmd/api/biz/mw"
 	"dousheng/cmd/api/biz/rpc"
+	"dousheng/cmd/api/biz/util"
+	"dousheng/dal/db"
+	"dousheng/kitex_gen/douyin_comment"
+	"dousheng/kitex_gen/douyin_favorite"
 	"dousheng/kitex_gen/douyin_feed"
+	"dousheng/kitex_gen/douyin_publish"
 	"dousheng/kitex_gen/douyin_user"
-	"dousheng/pack"
+	douyin_consts "dousheng/pkg/consts"
+	"fmt"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 	"github.com/cloudwego/kitex/pkg/klog"
+	"log"
+	"mime/multipart"
+	"strconv"
 )
 
 // Feed .
 // @router /douyin/feed [GET]
 func Feed(ctx context.Context, c *app.RequestContext) {
 	var err error
+	var user *douyin_user.User
+
+	claims, err := mw.JwtMiddleware.GetClaimsFromJWT(ctx, c)
+	if err == nil {
+		c.Set("JWT_PAYLOAD", claims)
+		identity := mw.JwtMiddleware.IdentityHandler(ctx, c)
+		if identity != nil {
+			c.Set(mw.JwtMiddleware.IdentityKey, identity)
+		}
+		c.Next(ctx)
+	} else {
+		fmt.Println(err)
+	}
+
 	var req douyin_api.FeedRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
@@ -26,17 +49,27 @@ func Feed(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	var userId *int64
+	userInterface, _ := c.Get(douyin_consts.IdentityKey)
+	user, _ = userInterface.(*douyin_user.User)
+	if user != nil {
+		fmt.Println(user)
+		userId = new(int64)
+		*userId = user.Id
+	}
+
 	rpcResp, err := rpc.Feed(ctx, &douyin_feed.FeedRequest{
 		LatestTime: req.LatestTime,
-		Token:      req.Token,
+		UserId:     userId,
 	})
+
 	klog.CtxInfof(ctx, "api call rpc end. rpcResp: %+v", rpcResp)
 	if err != nil {
 		c.String(consts.StatusInternalServerError, err.Error())
 		return
 	}
 
-	resp := pack.FeedResponseRpc2Api(rpcResp)
+	resp := db.FeedResponseRpc2Api(rpcResp)
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -44,7 +77,7 @@ func Feed(ctx context.Context, c *app.RequestContext) {
 // UserLogin .
 // @router /douyin/user/login [POST]
 func UserLogin(ctx context.Context, c *app.RequestContext) {
-	mw.JwtMiddleware.LoginHandler(ctx, c)
+	// mw.JwtMiddleware.LoginHandler(ctx, c)
 }
 
 // UserRegister .
@@ -83,14 +116,39 @@ func UserRegister(ctx context.Context, c *app.RequestContext) {
 // @router /douyin/user [GET]
 func User(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req douyin_api.UserRequest
-	err = c.BindAndValidate(&req)
+
+	userInterface, _ := c.Get(douyin_consts.IdentityKey)
+	user, ok := userInterface.(*douyin_user.User)
+	if !ok {
+		log.Fatal(userInterface)
+	}
+
+	var reply *douyin_user.UserResponse
+	reply, err = rpc.User(ctx, &douyin_user.UserRequest{
+		UserId: user.Id,
+	})
+	klog.CtxInfof(ctx, "api call rpc end. rpcResp: %+v", reply)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		c.String(consts.StatusInternalServerError, err.Error())
 		return
 	}
 
-	resp := new(douyin_api.UserResponse)
+	var resp = new(douyin_api.UserResponse)
+	resp.StatusMsg = reply.StatusMsg
+	resp.StatusCode = reply.StatusCode
+	resp.User = &douyin_api.User{
+		ID:              reply.User.Id,
+		Name:            reply.User.Name,
+		FollowCount:     *reply.User.FollowCount,
+		FollowerCount:   *reply.User.FollowerCount,
+		IsFollow:        reply.User.IsFollow,
+		Avatar:          "https://img.zmtc.com/2022/0926/20220926081721426.jpg",
+		BackgroundImage: "https://photo.16pic.com/00/54/69/16pic_5469853_b.jpg",
+		Signature:       "但做好事，不问前程",
+		TotalFavorited:  strconv.FormatInt(reply.User.TotalFavorited, 10),
+		WorkCount:       reply.User.WorkCount,
+		FavoriteCount:   reply.User.FavoriteCount,
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -98,17 +156,57 @@ func User(ctx context.Context, c *app.RequestContext) {
 // PublishAction .
 // @router /douyin/publish/action [POST]
 func PublishAction(ctx context.Context, c *app.RequestContext) {
-	mw.JwtMiddleware.MiddlewareFunc()
-
 	var err error
 	var req douyin_api.PublishActionRequest
+	var fileReq PublishActionFilePara
+
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
+	err = c.BindAndValidate(&fileReq)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
 
-	resp := new(douyin_api.PublishActionResponse)
+	var file multipart.File
+	var data []byte
+	file, err = fileReq.F.Open()
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+	data, err = util.ReadAll(file.Read)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	file.Close()
+
+	userInterface, _ := c.Get(douyin_consts.IdentityKey)
+	user, ok := userInterface.(*douyin_user.User)
+	if !ok {
+		log.Fatal(userInterface)
+	}
+
+	var reply *douyin_publish.PublishActionResponse
+	reply, err = rpc.PublishAction(ctx, &douyin_publish.PublishActionRequest{
+		UserId: user.Id,
+		Title:  req.Title,
+		Data:   data,
+	})
+	klog.CtxInfof(ctx, "api call rpc end. rpcResp: %+v", reply)
+	if err != nil {
+		c.String(consts.StatusInternalServerError, err.Error())
+		return
+	}
+
+	var resp = new(douyin_api.PublishActionResponse)
+	resp.StatusMsg = reply.StatusMsg
+	resp.StatusCode = reply.StatusCode
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -124,7 +222,37 @@ func PublishList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	reply, err := rpc.PublishList(ctx, &douyin_publish.PublishListRequest{
+		UserId: req.UserID,
+		Token:  req.Token,
+	})
 	resp := new(douyin_api.PublishListResponse)
+	resp.StatusMsg = reply.StatusMsg
+	resp.StatusCode = reply.StatusCode
+	for _, video := range reply.VideoList {
+		resp.VideoList = append(resp.VideoList, &douyin_api.Video{
+			ID: video.Id,
+			Author: &douyin_api.User{
+				ID:              video.Author.Id,
+				Name:            video.Author.Name,
+				FollowCount:     *video.Author.FollowCount,
+				FollowerCount:   *video.Author.FollowerCount,
+				IsFollow:        false,
+				Avatar:          "https://img.zmtc.com/2022/0926/20220926081721426.jpg",
+				BackgroundImage: "https://photo.16pic.com/00/54/69/16pic_5469853_b.jpg",
+				Signature:       "但做好事，不问前程",
+				TotalFavorited:  strconv.FormatInt(video.Author.TotalFavorited, 10),
+				WorkCount:       video.Author.WorkCount,
+				FavoriteCount:   video.Author.FavoriteCount,
+			},
+			PlayURL:       video.PlayUrl,
+			CoverURL:      video.CoverUrl,
+			FavoriteCount: video.FavoriteCount,
+			CommentCount:  video.CommentCount,
+			IsFavorite:    video.IsFavorite,
+			Title:         video.Title,
+		})
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -140,7 +268,27 @@ func FavoriteAction(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(douyin_api.FavoriteActionResponse)
+	userInterface, _ := c.Get(douyin_consts.IdentityKey)
+	user, ok := userInterface.(*douyin_user.User)
+	if !ok {
+		log.Fatal(userInterface)
+	}
+
+	var reply *douyin_favorite.FavoriteActionResponse
+	reply, err = rpc.FavoriteAction(ctx, &douyin_favorite.FavoriteActionRequest{
+		UserId:     user.Id,
+		VideoId:    req.VideoID,
+		ActionType: req.ActionType,
+	})
+	klog.CtxInfof(ctx, "api call rpc end. rpcResp: %+v", reply)
+	if err != nil {
+		c.String(consts.StatusInternalServerError, err.Error())
+		return
+	}
+
+	var resp = new(douyin_api.FavoriteActionResponse)
+	resp.StatusMsg = reply.StatusMsg
+	resp.StatusCode = reply.StatusCode
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -158,6 +306,39 @@ func FavoriteList(ctx context.Context, c *app.RequestContext) {
 
 	resp := new(douyin_api.FavoriteListResponse)
 
+	reply, err := rpc.FavoriteList(ctx, &douyin_favorite.FavoriteListRequest{
+		UserId: req.UserID,
+		Token:  req.Token,
+	})
+
+	resp.StatusMsg = reply.StatusMsg
+	resp.StatusCode = reply.StatusCode
+
+	for _, video := range reply.VideoList {
+		resp.VideoList = append(resp.VideoList, &douyin_api.Video{
+			ID: video.Id,
+			Author: &douyin_api.User{
+				ID:              video.Author.Id,
+				Name:            video.Author.Name,
+				FollowCount:     *video.Author.FollowCount,
+				FollowerCount:   *video.Author.FollowerCount,
+				IsFollow:        false,
+				Avatar:          "https://img.zmtc.com/2022/0926/20220926081721426.jpg",
+				BackgroundImage: "https://photo.16pic.com/00/54/69/16pic_5469853_b.jpg",
+				Signature:       "但做好事，不问前程",
+				TotalFavorited:  strconv.FormatInt(video.Author.TotalFavorited, 10),
+				WorkCount:       video.Author.WorkCount,
+				FavoriteCount:   video.Author.FavoriteCount,
+			},
+			PlayURL:       video.PlayUrl,
+			CoverURL:      video.CoverUrl,
+			FavoriteCount: video.FavoriteCount,
+			CommentCount:  video.CommentCount,
+			IsFavorite:    video.IsFavorite,
+			Title:         video.Title,
+		})
+	}
+
 	c.JSON(consts.StatusOK, resp)
 }
 
@@ -172,7 +353,29 @@ func CommentAction(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(douyin_api.CommentActionResponse)
+	userInterface, _ := c.Get(douyin_consts.IdentityKey)
+	user, ok := userInterface.(*douyin_user.User)
+	if !ok {
+		log.Fatal(userInterface)
+	}
+
+	var reply *douyin_comment.CommentActionResponse
+	reply, err = rpc.CommentAction(ctx, &douyin_comment.CommentActionRequest{
+		UserId:      user.Id,
+		VideoId:     req.VideoID,
+		ActionType:  req.ActionType,
+		CommentText: req.CommentText,
+		CommentId:   req.CommentID,
+	})
+	klog.CtxInfof(ctx, "api call rpc end. rpcResp: %+v", reply)
+	if err != nil {
+		c.String(consts.StatusInternalServerError, err.Error())
+		return
+	}
+
+	var resp = new(douyin_api.CommentActionResponse)
+	resp.StatusMsg = reply.StatusMsg
+	resp.StatusCode = reply.StatusCode
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -189,6 +392,35 @@ func CommentList(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := new(douyin_api.CommentListResponse)
+
+	reply, err := rpc.CommentList(ctx, &douyin_comment.CommentListRequest{
+		Token:   req.Token,
+		VideoId: req.VideoID,
+	})
+
+	resp.StatusMsg = reply.StatusMsg
+	resp.StatusCode = reply.StatusCode
+
+	for _, cm := range reply.CommentList {
+		resp.CommentList = append(resp.CommentList, &douyin_api.Comment{
+			ID: cm.Id,
+			User: &douyin_api.User{
+				ID:              cm.User.Id,
+				Name:            cm.User.Name,
+				FollowCount:     *cm.User.FollowCount,
+				FollowerCount:   *cm.User.FollowerCount,
+				IsFollow:        false,
+				Avatar:          "https://img.zmtc.com/2022/0926/20220926081721426.jpg",
+				BackgroundImage: "https://photo.16pic.com/00/54/69/16pic_5469853_b.jpg",
+				Signature:       "但做好事，不问前程",
+				TotalFavorited:  strconv.FormatInt(cm.User.TotalFavorited, 10),
+				WorkCount:       cm.User.WorkCount,
+				FavoriteCount:   cm.User.FavoriteCount,
+			},
+			Content:    cm.Content,
+			CreateDate: cm.CreateDate,
+		})
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"dousheng/dal/db"
 	"dousheng/kitex_gen/douyin_user/userservice"
 	"dousheng/pkg/consts"
 	"dousheng/pkg/mw"
@@ -22,7 +21,6 @@ func Init() {
 	// klog init
 	klog.SetLogger(kitexlogrus.NewLogger())
 	klog.SetLevel(klog.LevelInfo)
-	db.Init()
 }
 
 func main() {
